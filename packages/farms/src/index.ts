@@ -8,6 +8,7 @@ import {
   farmV3FetchFarms,
   fetchMasterChefV3Data,
   fetchCommonTokenUSDValue,
+  fetchTokenUSDValues,
   CommonPrice,
   LPTvl,
   getCakeApr,
@@ -46,6 +47,7 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
       farmsWithPrice,
       poolLength: poolLength.toNumber(),
       regularCakePerBlock: +regularCakePerBlock,
+      totalRegularAllocPoint: totalRegularAllocPoint.toString(),
     }
   }
 
@@ -94,6 +96,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         poolLength: poolLength.toNumber(),
         farmsWithPrice,
         cakePerSecond,
+        totalAllocPoint: totalAllocPoint.toString(),
       }
     } catch (error) {
       console.error(error)
@@ -125,6 +128,8 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
   }
 }
 
+export * from './apr'
+export * from './utils'
 export * from './v2/apr'
 export * from './v2/farmsPriceHelpers'
 export * from './types'
@@ -133,4 +138,4 @@ export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './v2/filterFarmsByQuery'
 
-export { masterChefV3Addresses, fetchCommonTokenUSDValue }
+export { masterChefV3Addresses, fetchCommonTokenUSDValue, fetchTokenUSDValues }
