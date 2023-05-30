@@ -11,7 +11,7 @@
   "packageManager": "pnpm@8.3.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev --filter=web...",
+    "dev": "turbo run dev --filter=web... --concurrency=19",
     "dev:aptos": "pnpm turbo run dev --filter=aptos-web...",
     "dev:blog": "pnpm turbo run dev --filter=blog...",
     "dev:bridge": "pnpm turbo run dev --filter=bridge...",
@@ -33,7 +33,6 @@
     "e2e:ci": "turbo run build --filter=web...[HEAD^1] && turbo run integration-test --filter=e2e...[HEAD^1]",
     "updateLPsAPR": "pnpm turbo run build --filter=@pancakeswap/farms && NODE_PATH=./apps/web/src tsx --tsconfig ./apps/web/tsconfig.json scripts/updateLPsAPR.ts",
     "updateAptosLPsAPR": "pnpm turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src tsx --tsconfig ./apps/aptos/tsconfig.json  scripts/updateAptosLpsAPR/index.ts",
-    "postinstall": "turbo run postinstall",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm i --lockfile-only",
@@ -64,8 +63,8 @@
     "tsx": "^3.12.6",
     "@pancakeswap/tsconfig": "workspace:*",
     "@pancakeswap/eslint-config-pancake": "workspace:*",
-    "typescript": "^4.9.4",
-    "turbo": "1.8.3",
+    "typescript": "^5.0.4",
+    "turbo": "1.9.9",
     "vitest": "^0.27.2"
   },
   "volta": {

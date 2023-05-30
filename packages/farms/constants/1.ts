@@ -1,5 +1,6 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { getAddress } from 'viem'
 import { SerializedFarmConfig } from '..'
 import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
@@ -47,6 +48,13 @@ export const farmsV3 = defineFarmV3Configs([
     feeAmount: FeeAmount.MEDIUM,
   },
   // Keep those farms on top
+  {
+    pid: 31,
+    lpAddress: Pool.getAddress(ethereumTokens.rETH, ethereumTokens.wbtc, FeeAmount.MEDIUM),
+    token0: ethereumTokens.rETH,
+    token1: ethereumTokens.wbtc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
   {
     pid: 30,
     lpAddress: Pool.getAddress(ethereumTokens.fuse, ethereumTokens.weth, FeeAmount.MEDIUM),
@@ -267,6 +275,11 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: ethereumTokens.weth,
     token: ethereumTokens.usdc,
   },
-].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
+].map((p) => ({
+  ...p,
+  token: p.token.serialize,
+  quoteToken: p.quoteToken.serialize,
+  lpAddress: getAddress(p.lpAddress),
+}))
 
 export default farms

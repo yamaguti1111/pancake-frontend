@@ -110,7 +110,7 @@ export default function PoolListPage() {
   if (positions?.length) {
     const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
       (acc, p) => {
-        acc[p.liquidity?.isZero() ? 1 : 0].push(p)
+        acc[p.liquidity === 0n ? 1 : 0].push(p)
         return acc
       },
       [[], []],
@@ -130,34 +130,41 @@ export default function PoolListPage() {
             positionSummaryLink,
             subtitle,
             setInverted,
-          }) => (
-            <LiquidityCardRow
-              feeAmount={feeAmount}
-              link={positionSummaryLink}
-              currency0={currencyQuote}
-              currency1={currencyBase}
-              tokenId={p.tokenId}
-              pairText={
-                !currencyQuote || !currencyBase ? (
-                  <Dots>{t('Loading')}</Dots>
-                ) : (
-                  `${currencyQuote.symbol}-${currencyBase.symbol} LP`
-                )
-              }
-              tags={
-                <>
-                  {p.isStaked && (
-                    <Tag outline variant="warning" mr="8px">
-                      Farming
-                    </Tag>
-                  )}
-                  <RangeTag removed={removed} outOfRange={outOfRange} />
-                </>
-              }
-              subtitle={subtitle}
-              onSwitch={() => setInverted((prev) => !prev)}
-            />
-          )}
+          }) => {
+            let token0Symbol = ''
+            let token1Symbol = ''
+            if (currencyQuote && currencyBase) {
+              token0Symbol =
+                currencyQuote.symbol.length > 7 ? currencyQuote.symbol.slice(0, 7).concat('...') : currencyQuote.symbol
+              token1Symbol =
+                currencyBase.symbol.length > 7 ? currencyBase.symbol.slice(0, 7).concat('...') : currencyBase.symbol
+            }
+
+            return (
+              <LiquidityCardRow
+                feeAmount={feeAmount}
+                link={positionSummaryLink}
+                currency0={currencyQuote}
+                currency1={currencyBase}
+                tokenId={p.tokenId}
+                pairText={
+                  !token0Symbol || !token1Symbol ? <Dots>{t('Loading')}</Dots> : `${token0Symbol}-${token1Symbol} LP`
+                }
+                tags={
+                  <>
+                    {p.isStaked && (
+                      <Tag outline variant="warning" mr="8px">
+                        Farming
+                      </Tag>
+                    )}
+                    <RangeTag removed={removed} outOfRange={outOfRange} />
+                  </>
+                }
+                subtitle={subtitle}
+                onSwitch={() => setInverted((prev) => !prev)}
+              />
+            )
+          }}
         </PositionListItem>
       )
     })

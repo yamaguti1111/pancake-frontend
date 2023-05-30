@@ -1,8 +1,17 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
+import { getAddress } from 'viem'
 
 import { PoolCategory, SerializedPool } from '../../types'
 
 export const livePools: SerializedPool[] = [
+  {
+    sousId: 4,
+    stakingToken: ethereumTokens.cake,
+    earningToken: ethereumTokens.rpl,
+    contractAddress: '0xd7136B50E641CfFf9D0aeB5c4617c779A80F0c8b',
+    poolCategory: PoolCategory.CORE,
+    tokenPerSecond: '0.0002820',
+  },
   {
     sousId: 3,
     stakingToken: ethereumTokens.cake,
@@ -29,6 +38,7 @@ export const livePools: SerializedPool[] = [
   },
 ].map((p) => ({
   ...p,
+  contractAddress: getAddress(p.contractAddress),
   stakingToken: p.stakingToken.serialize,
   earningToken: p.earningToken.serialize,
 }))
